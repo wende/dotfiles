@@ -1,0 +1,17 @@
+# Ignore everything
+*
+
+# But not these files...
+!*.vimrc
+!*.vim
+!*.bashrc
+!*.zshrc
+!*.eslintrc
+!*.tmux.conf
+!*.spacemacs
+!.gitignore
+!wendify/
+!wendify/*
+!wendify/config/vagrant
+!wendify/config/vagrant/*
+# etc...
