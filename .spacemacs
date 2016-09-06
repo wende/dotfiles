@@ -377,7 +377,7 @@ layers configuration. You are free to put any user code."
   (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
   (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
   (define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
-  (define-key company-active-map (kbd "C-SPC") 'company-complete-selection)
+   ;; (define-key company-active-map (kbd "C-SPC") 'company-complete-selection)
 
   ;; Magit refresh
   ;;(add-hook 'after-save-hook 'magit-after-save-refresh-status)
@@ -399,7 +399,7 @@ layers configuration. You are free to put any user code."
   (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
   (autoload 'prolog-mode "prolog" "Major mode for editing prolog programs." t)
   (setq prolog-system 'swi) ; prolog-system below for possible values
-  (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
+  (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode)))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
