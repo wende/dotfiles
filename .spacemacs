@@ -382,9 +382,14 @@ layers configuration. You are free to put any user code."
   ;; Magit refresh
   ;;(add-hook 'after-save-hook 'magit-after-save-refresh-status)
 
+  ;; Scala
+  (setq-default dotspacemacs-configuration-layers '((scala :variables scala-enable-eldoc t)))
+
   ;; Linter
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
+
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
   (defun insert-word (arg arg2)
     (interactive)

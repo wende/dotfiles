@@ -91,3 +91,5 @@ alias notify='terminal-notifier -title "Terminal" -message "Done with task!"'
 
 test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
 export PATH="$HOME/Library/Haskell/bin:$PATH"
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
