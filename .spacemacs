@@ -27,7 +27,6 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     spacemacs-helm
      ;; auto-completion
      better-defaults
      emacs-lisp
@@ -40,11 +39,9 @@ values."
      markdown
      syntax-checking
      auto-completion
-     company-mode
      erlang
      elixir
      elm
-     flycheck
      elixir-dogma
      git
      version-control
@@ -54,9 +51,7 @@ values."
      org
      colors
      react
-     editorconfig
      themes-megapack
-     perspectives
      yaml
      github
      haskell
@@ -279,6 +274,9 @@ It is called immediately after `dotspacemacs/init'.  You are free to put almost
 any user code here.  The exception is org related code, which should be placed
 in `dotspacemacs/user-config'."
   ;;(spacemacs/toggle-fill-column-indicator-on)
+
+  (push '("melpa-stable" . "stable.melpa.org/packages/") configuration-layer--elpa-archives)
+  (push '(ensime . "melpa-stable") package-pinned-packages)
   )
 
 (defun dotspacemacs/user-config ()
@@ -287,6 +285,7 @@ This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
 
   (setq flycheck-check-syntax-automatically '(mode-enabled save))
+  (setq ensime-startup-snapshot-notification `nil)
 
   ;; Elixir
   (add-hook 'alchemist-mode-hook 'company-mode)
@@ -326,6 +325,8 @@ layers configuration. You are free to put any user code."
     (move-text-down 1)
     (indent-according-to-mode)
     )
+
+  (define-key key-translation-map (kbd "M-h") (kbd "C-h"))
 
   (global-set-key [M-up] 'smart-move-up)
   (global-set-key [M-down] 'smart-move-down)
