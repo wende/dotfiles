@@ -49,7 +49,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-wakatime)
+plugins=(git zsh-wakatime zsh-autosuggestions)
 
 # User configuration
 
@@ -93,3 +93,5 @@ test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
 export PATH="$HOME/Library/Haskell/bin:$PATH"
 
 export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=2'
