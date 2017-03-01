@@ -35,6 +35,7 @@ values."
              shell-default-position 'bottom)
      ;; spell-checkin
      scala
+     lua
      search-engine
      markdown
      syntax-checking
@@ -56,11 +57,11 @@ values."
      yaml
      github
      haskell
-
-     (wakatime :variables
-               wakatime-api-key  "e6745645-9797-47cb-bb95-1031cdcf1dd5"
-               ;; use the actual wakatime path
-               wakatime-cli-path "/usr/local/bin/wakatime")
+     wakatime
+     ;;(wakatime :variables
+     ;;          wakatime-api-key  "e6745645-9797-47cb-bb95-1031cdcf1dd5"
+     ;;          ;; use the actual wakatime path
+     ;;          wakatime-cli-path "/usr/local/bin/wakatime")
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -133,7 +134,7 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
+   dotspacemacs-default-font '("Consolata"
                                :size 13
                                :weight normal
                                :width normal
@@ -333,10 +334,16 @@ layers configuration. You are free to put any user code."
   (global-set-key [M-down] 'smart-move-down)
 
   (global-set-key [S-left] 'windmove-left)
-  (global-set-key [S-right] 'windmove-right)
-  (global-set-key [S-up] 'windmove-up)
-  (global-set-key [S-down] 'windmove-down)
+  (global-set-key [S-H] 'windmove-left)
 
+  (global-set-key [S-right] 'windmove-right)
+  (global-set-key [S-L] 'windmove-right)
+
+  (global-set-key [S-up] 'windmove-up)
+  (global-set-key [S-K] 'windmove-up)
+
+  (global-set-key [S-down] 'windmove-down)
+  (global-set-key [S-J] 'windmove-down)
 
   ;;(global-set-key (kbd "M-d") 'kill-whole-word)
   ;;(global-set-key (kbd "M-") 'kill-whole-word)
@@ -349,8 +356,12 @@ layers configuration. You are free to put any user code."
   (global-set-key (kbd "C-h") 'delete-char)
   ;; Coffeescript React
   (add-to-list 'auto-mode-alist '("\\.cjsx\\'" . coffee-mode))
+
+  ;; Find multi occur
+  (define-key evil-normal-state-map (kbd "SPC b f") 'multi-occur-in-matching-buffers)
+
   ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
-  (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
+
   (define-key evil-insert-state-map "\C-e" 'end-of-line)
   (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
   (define-key evil-motion-state-map "\C-e" 'evil-end-of-line)
@@ -435,9 +446,12 @@ layers configuration. You are free to put any user code."
     ("bcc6775934c9adf5f3bd1f428326ce0dcd34d743a92df48c128e6438b815b44f" "40f6a7af0dfad67c0d4df2a1dd86175436d79fc69ea61614d668a635c2cd94ab" "3b24f986084001ae46aa29ca791d2bc7f005c5c939646d2b800143526ab4d323" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" default)))
  '(electric-indent-mode nil)
  '(evil-disable-insert-state-bindings nil)
+ '(evil-want-Y-yank-to-eol nil)
  '(package-selected-packages
-    (quote
-    (zonokai-theme zenburn-theme zen-and-art-theme yaml-mode web-mode web-beautify wakatime-mode underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tern tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stekene-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode seti-theme scss-mode sass-mode ruby-end reverse-theme rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme org-repo-todo org-present org-pomodoro alert log4e gntp org-plus-contrib org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc markdown-mode majapahit-theme lush-theme light-soap-theme less-css-mode json-mode json-snatcher json-reformat js2-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme htmlize heroku-theme hemisu-theme helm-gitignore request helm-dash helm-css-scss hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe fringe-helper git-gutter gh logito pcache gh-md gandalf-theme flycheck flatui-theme flatland-theme firebelly-theme farmhouse-theme with-editor espresso-theme erlang emmet-mode dracula-theme django-theme diff-hl dash-at-point darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company colorsarenice-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme yasnippet apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes elixir-mode afternoon-theme auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses [highlight-numbers] highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move bracketed-paste auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
+   (quote
+    (zonokai-theme zenburn-theme zen-and-art-theme yaml-mode web-mode web-beautify wakatime-mode underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tern tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stekene-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode seti-theme scss-mode sass-mode ruby-end reverse-theme rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme org-repo-todo org-present org-pomodoro alert log4e gntp org-plus-contrib org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc markdown-mode majapahit-theme lush-theme light-soap-theme less-css-mode json-mode json-snatcher json-reformat js2-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme htmlize heroku-theme hemisu-theme helm-gitignore request helm-dash helm-css-scss hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe fringe-helper git-gutter gh logito pcache gh-md gandalf-theme flycheck flatui-theme flatland-theme firebelly-theme farmhouse-theme with-editor espresso-theme erlang emmet-mode dracula-theme django-theme diff-hl dash-at-point darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company colorsarenice-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme yasnippet apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes elixir-mode afternoon-theme auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses
+                   [highlight-numbers]
+                   highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move bracketed-paste auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(wakatime-api-key "e6745645-9797-47cb-bb95-1031cdcf1dd5"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -446,4 +460,5 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(default ((t (:background nil))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(helm-buffer-directory ((t (:background "#72aaca" :foreground "brightblack")))))
