@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="agnoster"
+ZSH_THEME="powerlevel9k/powerlevel9k"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -87,10 +87,18 @@ alias spacemacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-alias notify='terminal-notifier -title "Terminal" -message "Done with task!"'
+alias notify="terminal-notifier -title 'Terminal' -message 'Done with task!'"
+alias git-pull="git branch -r | grep -v  '\->' | while read remote; do git branch --track \"$${remote#origin/}\" \"$$remote\"; done"
+alias git-branches="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(authorname) - (%(color:green)%(committerdate:relative)%(color:reset)) - %(color:red)%(upstream:track)%(color:reset)'" 
+alias git-clean='for b in `git branch --merged | grep -v \*`; do git branch -D $b; done'
+alias up='git push origin HEAD'
+alias down='git pull origin `git rev-parse --abbrev-ref HEAD`'
+new-branch() { git checkout master && down && git checkout -b $1 ;}
 
 test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=2'
 TMP=$PROMPT
 #export PROMPT="$TMP%{%k%F{yellow}%}
 #E %{%f%}"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

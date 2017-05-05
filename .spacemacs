@@ -291,9 +291,12 @@ layers configuration. You are free to put any user code."
 
   ;; Elixir
   (add-hook 'alchemist-mode-hook 'company-mode)
+  (add-hook 'alchemist-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
 
   ;;Linum
-  (global-linum-mode)
+  ;; (global-linum-mode)
+  (setq
+   flycheck-pos-tip-timeout 10)
 
   ;; Nice theme :D
   (load-theme 'flatland t)
@@ -328,6 +331,7 @@ layers configuration. You are free to put any user code."
     (indent-according-to-mode)
     )
 
+  (setq key-chord-two-keys-delay 10)
   (define-key key-translation-map (kbd "M-h") (kbd "C-h"))
 
   (global-set-key [M-up] 'smart-move-up)
@@ -432,7 +436,67 @@ layers configuration. You are free to put any user code."
   (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
   (autoload 'prolog-mode "prolog" "Major mode for editing prolog programs." t)
   (setq prolog-system 'swi) ; prolog-system below for possible values
-  (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode)))
+  (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
+
+  ;; Alternative way to defeat smartparens-mode in hybrid mode
+  (add-hook 'evil-hybrid-state-entry-hook 'turn-off-smartparens-mode)
+  (add-hook 'evil-hybrid-state-exit-hook 'turn-on-smartparens-mode)
+
+
+  (define-key evil-normal-state-map (kbd "RET")
+    (lambda ()
+      (interactive)
+      (call-interactively 'spacemacs/evil-insert-line-below)
+      (evil-next-line)))
+
+  ;; Copy and yank for NW
+  (defun copy-to-clipboard ()
+    "Copies selection to x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (message "Yanked region to x-clipboard!")
+          (call-interactively 'clipboard-kill-ring-save)
+          )
+      (if (region-active-p)
+          (progn
+            (shell-command-on-region (region-beginning) (region-end) "xargs echo | pbcopy")
+            (message "Yanked region to clipboard!")
+            (deactivate-mark))
+        (message "No region active; can't yank to clipboard!")))
+    )
+
+  (defun paste-from-clipboard ()
+    "Pastes from x-clipboard."
+    (interactive)
+    (if (display-graphic-p)
+        (progn
+          (clipboard-yank)
+          (message "graphics active")
+          )
+      (insert (shell-command-to-string "xargs echo | pbpaste"))
+      )
+    )
+  (evil-leader/set-key "o y" 'copy-to-clipboard)
+  (evil-leader/set-key "o p" 'paste-from-clipboard)
+  (evil-leader/set-key "o m" 'insert-last-message)
+
+  (defun last-message (&optional num)
+    (or num (setq num 1))
+    (if (= num 0)
+        (current-message)
+      (save-excursion
+        (set-buffer "*Messages*")
+        (save-excursion
+          (forward-line (- 1 num))
+          (backward-char)
+          (let ((end (point)))
+            (forward-line 0)
+            (buffer-substring-no-properties (point) end))))))
+  (defun insert-last-message (&optional num)
+    (interactive "*p")
+    (insert (last-message num)))
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

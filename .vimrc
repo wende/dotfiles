@@ -1,1 +1,1 @@
-/Users/iraasta/.spf13-vim-3/.vimrc
+/Users/iraasta/.space-vim/init.vim
