@@ -44,6 +44,7 @@ values."
      elixir
      elm
      elixir-dogma
+     ;; flycheck-credo
      git
      version-control
      dash
@@ -438,9 +439,12 @@ layers configuration. You are free to put any user code."
   (setq prolog-system 'swi) ; prolog-system below for possible values
   (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 
+  (add-hook 'after-save-hook 'normal-mode)
+
   ;; Alternative way to defeat smartparens-mode in hybrid mode
   (add-hook 'evil-hybrid-state-entry-hook 'turn-off-smartparens-mode)
   (add-hook 'evil-hybrid-state-exit-hook 'turn-on-smartparens-mode)
+
 
 
   (define-key evil-normal-state-map (kbd "RET")
