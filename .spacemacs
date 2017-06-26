@@ -135,8 +135,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
-   dotspacemacs-default-font '("Consolata"
-                               :size 13
+   dotspacemacs-default-font '("Hasklig"
+                               :size 16
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -301,6 +301,8 @@ layers configuration. You are free to put any user code."
 
   ;; Nice theme :D
   (load-theme 'flatland t)
+
+  (spacemacs/set-font "Hasklig" 16)
 
   ;; Switching windows
   (defun kill-whole-word ()
@@ -522,7 +524,10 @@ layers configuration. You are free to put any user code."
                    highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move bracketed-paste auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(safe-local-variable-values
    (quote
-    ((elm-sort-imports-on-save)
+    ((eval progn
+           (pp-buffer)
+           (indent-buffer))
+     (elm-sort-imports-on-save)
      (elm-format-on-save)
      (elixir-enable-compilation-checking . t)
      (elixir-enable-compilation-checking))))

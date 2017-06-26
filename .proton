@@ -50,7 +50,7 @@
     ;; etc
     ;; Get more at github.com/dvcrn/proton/tree/master/src/cljs/proton/layers/fun
     ;; -----------------------------------
-    :fun/power_mode
+    ;; :fun/power_mode
   ]
 
   ;; Packages that are not part of a layer. List them here as keyword
@@ -62,6 +62,10 @@
     :wakatime
     :atom-build-make
     :revert-buffer
+    :hasklig
+    :git-time-machine
+    :imdone-atom
+    :dash
   ]
 
   ;; Packages that you want to disable.
@@ -79,7 +83,9 @@
   :configuration
   [
     ;; appearance
-    ["editor.fontFamily" "Hack"]
+    ["editor.fontFamily" "Hasklig"]
+    ["editor.showInvisibles" true]
+    ["editor.scrollPastEnd" true]
 
     ;; the current default theme
     ["core.themes" ["nucleus-dark-ui" "atom-dark-fusion-syntax"]]

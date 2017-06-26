@@ -89,11 +89,16 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 alias notify="terminal-notifier -title 'Terminal' -message 'Done with task!'"
 alias git-pull="git branch -r | grep -v  '\->' | while read remote; do git branch --track \"$${remote#origin/}\" \"$$remote\"; done"
-alias git-branches="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(authorname) - (%(color:green)%(committerdate:relative)%(color:reset)) - %(color:red)%(upstream:track)%(color:reset)'"
+alias gls="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(authorname) - (%(color:green)%(committerdate:relative)%(color:reset)) - %(color:red)%(upstream:track)%(color:reset)'"
 alias git-clean='for b in `git branch --merged | grep -v \*`; do git branch -D $b; done'
 alias up='git push origin HEAD'
 alias down='git pull origin `git rev-parse --abbrev-ref HEAD`'
 new-branch() { git checkout master && down && git checkout -b $1;}
+watch() {
+  found=$(find . -name $1)
+  shift
+  entr $*
+}
 
 test -s "$HOME/.kiex/scripts/kiex" && source "$HOME/.kiex/scripts/kiex"
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=2'
