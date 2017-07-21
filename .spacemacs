@@ -30,9 +30,9 @@ values."
      ;; auto-completion
      better-defaults
      emacs-lisp
-      (shell :variables
-             shell-default-height 30
-             shell-default-position 'bottom)
+     (shell :variables
+            shell-default-height 30
+            shell-default-position 'bottom)
      ;; spell-checkin
      scala
      lua
@@ -42,8 +42,13 @@ values."
      auto-completion
      erlang
      elixir
-     elm
+     (elm :variables
+          elm-format-command "elm-format"
+          elm-format-on-save t)
+
+     ;; Private layers
      elixir-dogma
+     ;; display
      ;; flycheck-credo
      git
      version-control
@@ -58,11 +63,10 @@ values."
      yaml
      github
      haskell
-     wakatime
-     ;;(wakatime :variables
-     ;;          wakatime-api-key  "e6745645-9797-47cb-bb95-1031cdcf1dd5"
-     ;;          ;; use the actual wakatime path
-     ;;          wakatime-cli-path "/usr/local/bin/wakatime")
+     (wakatime :variables
+               wakatime-api-key  "e6745645-9797-47cb-bb95-1031cdcf1dd5"
+               ;; use the actual wakatime path
+               wakatime-cli-path "wakatime")
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -96,11 +100,11 @@ values."
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    dotspacemacs-elpa-timeout 5
    ;; If non nil then spacemacs will check for updates at startup
-   ;; when the current branch is not `develop'. (default t)
    dotspacemacs-check-for-update t
    ;; One of `vim', `emacs' or `hybrid'. Evil is always enabled but if the
    ;; variable is `emacs' then the `holy-mode' is enabled at startup. `hybrid'
    ;; uses emacs key bindings for vim's insert mode, but otherwise leaves evil
+   ;; when the current branch is not `develop'. (default t)
    ;; unchanged. (default 'vim)
    dotspacemacs-editing-style 'hybrid
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
@@ -136,8 +140,8 @@ values."
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
    ;; size to make separators look not too crappy.
    dotspacemacs-default-font '("Hasklig"
-                               :size 16
-                               :weight normal
+                               :size 14
+                               :weight light
                                :width normal
                                :powerline-scale 1.1)
    ;; The leader key
@@ -289,6 +293,7 @@ layers configuration. You are free to put any user code."
 
   (setq flycheck-check-syntax-automatically '(mode-enabled save))
   (setq ensime-startup-snapshot-notification `nil)
+  (spacemacs/toggle-indent-guide-globally-on)
 
   ;; Elixir
   (add-hook 'alchemist-mode-hook 'company-mode)
@@ -302,7 +307,11 @@ layers configuration. You are free to put any user code."
   ;; Nice theme :D
   (load-theme 'flatland t)
 
-  (spacemacs/set-font "Hasklig" 16)
+  ;;(spacemacs/set-font "Monoid" 14)
+  ;;(set-face-attribute 'default nil :family "Monoid")
+  ;;(set-face-attribute 'default nil :height 165)
+
+
 
   ;; Switching windows
   (defun kill-whole-word ()
@@ -411,6 +420,7 @@ layers configuration. You are free to put any user code."
   (setq-default js2-basic-offset 2
                 js-indent-level 2)
 
+  (setq-default spacemacs-show-trailing-whitespace nil)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 ;; Enable mouse support
   (unless window-system
@@ -434,8 +444,8 @@ layers configuration. You are free to put any user code."
     (re-search-forward "[^a-zZ-A_-]")
     (backward-char)
     (insert arg2)
-    )
-  ;;; Prolog mode
+        )
+      ;;; Prolog mode
   (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
   (autoload 'prolog-mode "prolog" "Major mode for editing prolog programs." t)
   (setq prolog-system 'swi) ; prolog-system below for possible values
@@ -443,7 +453,7 @@ layers configuration. You are free to put any user code."
 
   (add-hook 'after-save-hook 'normal-mode)
 
-  ;; Alternative way to defeat smartparens-mode in hybrid mode
+  ; Alternative way to defeat smartparens-mode in hybrid mode
   (add-hook 'evil-hybrid-state-entry-hook 'turn-off-smartparens-mode)
   (add-hook 'evil-hybrid-state-exit-hook 'turn-on-smartparens-mode)
 
@@ -471,7 +481,6 @@ layers configuration. You are free to put any user code."
             (deactivate-mark))
         (message "No region active; can't yank to clipboard!")))
     )
-
   (defun paste-from-clipboard ()
     "Pastes from x-clipboard."
     (interactive)
@@ -513,31 +522,22 @@ layers configuration. You are free to put any user code."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("bcc6775934c9adf5f3bd1f428326ce0dcd34d743a92df48c128e6438b815b44f" "40f6a7af0dfad67c0d4df2a1dd86175436d79fc69ea61614d668a635c2cd94ab" "3b24f986084001ae46aa29ca791d2bc7f005c5c939646d2b800143526ab4d323" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "b7b2cd8c45e18e28a14145573e84320795f5385895132a646ff779a141bbda7e" default)))
- '(electric-indent-mode nil)
- '(evil-disable-insert-state-bindings nil)
+    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "3632cf223c62cb7da121be0ed641a2243f7ec0130178722554e613c9ab3131de" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "ed763cdf0b7c523cdc094ba137080e7f2c4e7a28303e0cbeb0eda159f964f1b6" "ba9be9caf9aa91eb34cf11ad9e8c61e54db68d2d474f99a52ba7e87097fa27f5" default)))
  '(evil-want-Y-yank-to-eol nil)
- '(package-selected-packages
-   (quote
-    (zonokai-theme zenburn-theme zen-and-art-theme yaml-mode web-mode web-beautify wakatime-mode underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme toc-org tern tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme stekene-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode seti-theme scss-mode sass-mode ruby-end reverse-theme rainbow-mode rainbow-identifiers railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme org-repo-todo org-present org-pomodoro alert log4e gntp org-plus-contrib org-bullets omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc markdown-mode majapahit-theme lush-theme light-soap-theme less-css-mode json-mode json-snatcher json-reformat js2-mode js-doc jbeans-theme jazz-theme jade-mode ir-black-theme inkpot-theme htmlize heroku-theme hemisu-theme helm-gitignore request helm-dash helm-css-scss hc-zenburn-theme haml-mode gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gnuplot gitignore-mode github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe fringe-helper git-gutter gh logito pcache gh-md gandalf-theme flycheck flatui-theme flatland-theme firebelly-theme farmhouse-theme with-editor espresso-theme erlang emmet-mode dracula-theme django-theme diff-hl dash-at-point darktooth-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company colorsarenice-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized coffee-mode clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme yasnippet apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes elixir-mode afternoon-theme auto-complete ws-butler window-numbering which-key volatile-highlights vi-tilde-fringe use-package spacemacs-theme spaceline smooth-scrolling restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox page-break-lines open-junk-file neotree move-text macrostep lorem-ipsum linum-relative leuven-theme info+ indent-guide ido-vertical-mode hungry-delete hl-todo highlight-parentheses
-                   [highlight-numbers]
-                   highlight-indentation help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery expand-region exec-path-from-shell evil-visualstar evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-args evil-anzu eval-sexp-fu elisp-slime-nav define-word clean-aindent-mode buffer-move bracketed-paste auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(safe-local-variable-values
    (quote
     ((eval progn
            (pp-buffer)
            (indent-buffer))
-     (elm-sort-imports-on-save)
-     (elm-format-on-save)
      (elixir-enable-compilation-checking . t)
      (elixir-enable-compilation-checking))))
- '(wakatime-api-key "e6745645-9797-47cb-bb95-1031cdcf1dd5"))
+ '(wakatime-api-key "e6745645-9797-47cb-bb95-1031cdcf1dd5")
+ '(wakatime-cli-path "/usr/local/bin/wakatime")
+ '(wakatime-python-bin nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background nil))))
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
- '(helm-buffer-directory ((t (:background "#72aaca" :foreground "brightblack")))))
+ ;;'(default ((t (:foreground "#eee" :background "#011827")) (((class color) (min-colors 256)) (:foreground "#eee" :background "black")))))
+ )
