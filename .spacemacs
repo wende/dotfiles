@@ -47,7 +47,7 @@ values."
           elm-format-on-save t)
 
      ;; Private layers
-     elixir-dogma
+     ;; elixir-dogma
      ;; display
      ;; flycheck-credo
      git
@@ -343,7 +343,8 @@ layers configuration. You are free to put any user code."
     (indent-according-to-mode)
     )
 
-  (setq key-chord-two-keys-delay 10)
+  ;; (define-key evil-search-highlight-persist-map (kbd "ESC") 'evil-search-highlight-persist-remove-all)
+  (setq key-chord-two-keys-delay 20)
   (define-key key-translation-map (kbd "M-h") (kbd "C-h"))
 
   (global-set-key [M-up] 'smart-move-up)
