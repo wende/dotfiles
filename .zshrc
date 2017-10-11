@@ -96,7 +96,13 @@ alias gls="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %
 alias git-clean='for b in `git branch --merged | grep -v \*`; do git branch -D $b; done'
 alias up='git push origin HEAD'
 alias down='git pull origin `git rev-parse --abbrev-ref HEAD`'
-new-branch() { git checkout master && down && git checkout -b $1;}
+git-who() {
+    git ls-tree -r -z --name-only HEAD -- $1 | xargs -0 -n1 git blame \
+         --line-porcelain HEAD |grep  "^author "|sort|uniq -c|sort -nr
+}
+new-branch() {
+    git checkout master && down && git checkout -b $1;
+}
 watch() {
     find . -name $1 | entr -s "$2 ; terminal-notifier -title 'entr' -message 'Tests finished!'"
 }
@@ -121,5 +127,3 @@ export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
-export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"

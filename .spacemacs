@@ -66,7 +66,7 @@ values."
      (wakatime :variables
                wakatime-api-key  "e6745645-9797-47cb-bb95-1031cdcf1dd5"
                ;; use the actual wakatime path
-               wakatime-cli-path "wakatime")
+               wakatime-cli-path "/usr/local/bin/wakatime")
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -419,7 +419,7 @@ layers configuration. You are free to put any user code."
 
   ;; Linter
   (setq-default js2-basic-offset 2
-                js-indent-level 2)
+                js-indent-level 4)
 
   (setq-default spacemacs-show-trailing-whitespace nil)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -527,18 +527,18 @@ layers configuration. You are free to put any user code."
  '(evil-want-Y-yank-to-eol nil)
  '(safe-local-variable-values
    (quote
-    ((eval progn
+    ((elm-sort-imports-on-save)
+     (elm-format-on-save)
+     (eval progn
            (pp-buffer)
            (indent-buffer))
      (elixir-enable-compilation-checking . t)
      (elixir-enable-compilation-checking))))
  '(wakatime-api-key "e6745645-9797-47cb-bb95-1031cdcf1dd5")
- '(wakatime-cli-path "/usr/local/bin/wakatime")
- '(wakatime-python-bin nil))
+ '(wakatime-cli-path "/usr/local/bin/wakatime"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;;'(default ((t (:foreground "#eee" :background "#011827")) (((class color) (min-colors 256)) (:foreground "#eee" :background "black")))))
  )
