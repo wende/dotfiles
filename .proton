@@ -64,9 +64,12 @@
     :atom-build-make
     :revert-buffer
     :hasklig
-    :git-time-machine
     :imdone-atom
     :dash
+    :flexible-ui
+    :atom-fuzzy-grep
+    :wende/elixir-atom
+    :clipboard-plus
   ]
 
   ;; Packages that you want to disable.
@@ -110,14 +113,37 @@
   ;; :keybindings {:z {:category "foo-category"
   ;;                   :y {:title "execute hello"
   ;;                       :action "hello"}}}
-  :keybindings {}
+  :keybindings {:s {:category "selection"
+                    :a {:category "all"
+                        :p {:title "pattern"
+                          :action "fuzzy-grep:toggle"}}}}
 
   ;; Want some custom behavior inside a certain window?
   ;; Add your own nifty things here!
-  :keymaps [{:selector ".tree-view" :keymap [["escape" "tree-view:toggle"]]}
-            ;; Want to rebind ESC to something else? You can do that here.
-            ;; If you are good with esc, just remove the following line.
-            {:selector "atom-text-editor.vim-mode-plus:not(.normal-mode)" :keymap [["f d" "vim-mode-plus:activate-normal-mode"]]}
-            ;; {:selector "atom-text-editor.vim-mode:not(.normal-mode)" :keymap [["f d" "vim-mode:activate-normal-mode"]]}
+  :keymaps [
+    {:selector ".tree-view" :keymap [
+      ["escape" "tree-view:toggle"]
+    ]}
+    {:selector "atom-text-editor.vim-mode-plus:not(.normal-mode)" :keymap [
+      ["f d" "vim-mode-plus:activate-normal-mode"]
+    ]}
+    {:selector "atom-text-editor.vim-mode-plus" :keymap [
+      ["tab" "editor:indent-selected-rows"]
+      ["ctrl-k" "editor:cut-to-end-of-line"]
+      ["alt-y" "editor:replace-line-with"]
+      ["alt-_" "core:redo"]
+      ["ctrl-/" "core:undo"]
+    ]}
+    {:selector "atom-text-editor.vim-mode-plus.insert-mode" :keymap [
+      ["ctrl-y" "core:paste"]
+      ["ctrl-s" "vim-mode-plus:search"]
+      ["ctrl-g" "symbols-view:toggle-file-symbols"]
+      ["ctrl-x ctrl-s" "core:save"]
+    ]}
+    {:selector "atom-text-editor.vim-mode-plus.normal-mode" :keymap [
+      ["ctrl-y" "core:paste"]
+      ["ctrl-g" "symbols-view:toggle-file-symbols"]
+      ["ctrl-x ctrl-s" "core:save"]
+    ]}
   ]
 }
