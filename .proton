@@ -137,13 +137,16 @@
     {:selector "atom-text-editor.vim-mode-plus.insert-mode" :keymap [
       ["ctrl-y" "core:paste"]
       ["ctrl-s" "vim-mode-plus:search"]
-      ["ctrl-g" "symbols-view:toggle-file-symbols"]
+      ["ctrl-t" "symbols-view:toggle-file-symbols"]
       ["ctrl-x ctrl-s" "core:save"]
     ]}
     {:selector "atom-text-editor.vim-mode-plus.normal-mode" :keymap [
       ["ctrl-y" "core:paste"]
-      ["ctrl-g" "symbols-view:toggle-file-symbols"]
+      ["ctrl-t" "symbols-view:toggle-file-symbols"]
       ["ctrl-x ctrl-s" "core:save"]
+    ]}
+    {:selector ".platform-darwin atom-text-editor.vim-mode-plus:not(.insert-mode)" :keymap [
+      ["ctrl-s" "vim-mode-plus:search"]
     ]}
   ]
 }
