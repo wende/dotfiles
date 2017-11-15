@@ -70,6 +70,7 @@
     :atom-fuzzy-grep
     :wende/elixir-atom
     :clipboard-plus
+    ;; :teletype
   ]
 
   ;; Packages that you want to disable.
@@ -124,6 +125,12 @@
     {:selector ".tree-view" :keymap [
       ["escape" "tree-view:toggle"]
     ]}
+    {:selector "atom-text-editor.vim-mode-plus.normal-mode" :keymap [
+      ["ctrl-y" "core:paste"]
+      ["ctrl-t" "symbols-view:toggle-file-symbols"]
+      ["ctrl-x ctrl-s" "core:save"]
+      ["ctrl-l" "vim-mode-plus:redraw-cursor-line-at-middle"]
+    ]}
     {:selector "atom-text-editor.vim-mode-plus:not(.normal-mode)" :keymap [
       ["f d" "vim-mode-plus:activate-normal-mode"]
     ]}
@@ -133,17 +140,15 @@
       ["alt-y" "editor:replace-line-with"]
       ["alt-_" "core:redo"]
       ["ctrl-/" "core:undo"]
+      ["shift-left" "window:focus-pane-on-left"]
+      ["shift-right" "window:focus-pane-on-right"]
     ]}
     {:selector "atom-text-editor.vim-mode-plus.insert-mode" :keymap [
       ["ctrl-y" "core:paste"]
       ["ctrl-s" "vim-mode-plus:search"]
       ["ctrl-t" "symbols-view:toggle-file-symbols"]
       ["ctrl-x ctrl-s" "core:save"]
-    ]}
-    {:selector "atom-text-editor.vim-mode-plus.normal-mode" :keymap [
-      ["ctrl-y" "core:paste"]
-      ["ctrl-t" "symbols-view:toggle-file-symbols"]
-      ["ctrl-x ctrl-s" "core:save"]
+      ["ctrl-l" "vim-mode-plus:redraw-cursor-line-at-middle"]
     ]}
     {:selector ".platform-darwin atom-text-editor.vim-mode-plus:not(.insert-mode)" :keymap [
       ["ctrl-s" "vim-mode-plus:search"]

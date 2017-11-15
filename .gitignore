@@ -2,15 +2,16 @@
 *
 
 # But not these files...
-!*.vimrc
-!*.vim
-!*.bashrc
-!*.zshrc
-!*.zenburn.conf
-!*.eslintrc
-!*.tmux.conf
-!*.spacemacs
+!.vimrc
+!.vim
+!.bashrc
+!.zshrc
+!.zenburn.conf
+!.eslintrc
+!.tmux.conf
+!.spacemacs
 !.gitignore
+!.proton
 !wendify/
 !wendify/*
 !wendify/config/vagrant
