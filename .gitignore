@@ -19,4 +19,6 @@
 !.atom/keymap.cson
 !iterm2/
 !iterm2/*
+!.config/karabiner/karabiner.json
+
 # etc...
