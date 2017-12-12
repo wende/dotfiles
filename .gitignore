@@ -17,4 +17,6 @@
 !wendify/config/vagrant
 !wendify/config/vagrant/*
 !.atom/keymap.cson
+!iterm2/
+!iterm2/*
 # etc...

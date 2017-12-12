@@ -91,6 +91,7 @@ notify() {
   terminal-notifier -title 'Terminal' -message 'Done with task!'
 }
 
+alias diskbiggest='du -hax $1 | sort -rh | head -10'
 alias git-pull="git branch -r | grep -v  '\->' | while read remote; do git branch --track \"$${remote#origin/}\" \"$$remote\"; done"
 alias gls="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(authorname) - (%(color:green)%(committerdate:relative)%(color:reset)) - %(color:red)%(upstream:track)%(color:reset)'"
 alias git-clean='for b in `git branch --merged | grep -v \*`; do git branch -D $b; done'
