@@ -49,7 +49,7 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-wakatime)
+plugins=(git zsh-autosuggestions zsh-wakatime fzf-zsh)
 
 # User configuration
 
@@ -131,3 +131,5 @@ export LC_ALL="en_US.UTF-8"
 function dotenv () {
   env $(cat .env | xargs) $*
 }
+
+ssh-add
