@@ -49,7 +49,7 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-wakatime fzf-zsh)
+plugins=(git zsh-autosuggestions zsh-wakatime fzf-zsh z)
 
 # User configuration
 
@@ -133,3 +133,6 @@ function dotenv () {
 }
 
 ssh-add
+
+alias kill-bg='kill $(jobs -p)'
+. /Users/krzysztofwende/.kerl/20.0/activate

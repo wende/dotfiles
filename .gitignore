@@ -22,3 +22,4 @@
 !.config/karabiner/karabiner.json
 
 # etc...
+!.vscode.json

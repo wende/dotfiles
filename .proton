@@ -37,7 +37,7 @@
     :lang/elixir
     :lang/elm
     :lang/markdown
-    :lang/haskell
+    ;; :lang/haskell
     ;; :lang/rust
     :lang/javascript
 
@@ -71,6 +71,15 @@
     :wende/elixir-atom
     :clipboard-plus
     :teletype
+    :git-time-machine
+    :color-picker
+    :markdown-preview
+    :atom-elixir-formatter
+    :autoreload-package-service
+    :atom-ide-ui
+    ;; :nuclide
+    :ide-elixir
+    :atom-mdtoc-sef
   ]
 
   ;; Packages that you want to disable.
@@ -82,6 +91,9 @@
     ;; :about
     ;; :welcome
     :minimap
+    ;; :linter
+    :atom-mdtoc
+
   ]
   ;; Proton takes over your atom configuration. All settings that are not listed here will get wiped
   ;; Configurations are denoted as 2 element vector consisting of k/v
@@ -93,6 +105,7 @@
     ["editor.showInvisibles" true]
     ["editor.scrollPastEnd" true]
     ["editor.softWrap" false]
+    ;; ["editor.nonWordCharacters" "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-…_"]
 
     ;; the current default theme
     ;; ["core.themes" ["nucleus-dark-ui" "atom-dark-fusion-syntax"]]
@@ -108,6 +121,8 @@
 
     ;; prefer classic vim mode over vim-mode-plus? Change this to :vim-mode
     ["proton.core.inputProvider" :vim-mode-plus]
+    ["atom-elixir-formatter.formatOnSave" "never"]
+    ["atom-elixir-formatter.elixirExecutable" "/Users/krzysztofwende/.kiex/elixirs/elixir-1.6.0/bin/elixir"]
   ]
 
   ;; Don't like a keybinding or want to add something yourself? Do it here
@@ -140,6 +155,7 @@
       ["alt-up" "editor:move-line-up"]
       ["ctrl-right" "vim-mode-plus:search-current-word"]
       ["ctrl-left" "vim-mode-plus:search-current-word-backwards"]
+      ["ctrl-b" "vim-mode-plus:a-latest-change"]
     ]}
     {:selector "atom-text-editor.vim-mode-plus:not(.normal-mode)" :keymap [
       ["f d" "vim-mode-plus:activate-normal-mode"]
@@ -165,6 +181,7 @@
       ["alt-down" "editor:move-line-down"]
       ["ctrl-right" "vim-mode-plus:search-current-word"]
       ["ctrl-left" "vim-mode-plus:search-current-word-backwards"]
+      ["ctrl-b" "vim-mode-plus:a-latest-change"]
     ]}
     {:selector ".platform-darwin atom-text-editor.vim-mode-plus:not(.insert-mode)" :keymap [
       ["ctrl-s" "vim-mode-plus:search"]
