@@ -1,5 +1,11 @@
     {
         "vim.leader": "<space>",
+        "vim.handleKeys": {
+            "<C-e>": false,
+            "<C-a>": false,
+            "<C-s>": false
+        },
+        "vim.useCtrlKeys": false,
         "vim.otherModesKeyBindingsNonRecursive": [
             {
                 "before": [
@@ -624,7 +630,7 @@
                         "args": []
                     }
                 ]
-            },        
+            },
             {
                 "before": [
                     "<leader>",
@@ -933,7 +939,7 @@
         "workbench.colorTheme": "Material Theme",
         "editor.fontFamily": "Hasklig, Monaco, 'Courier New', monospace",
         "editor.fontLigatures": true,
-        "editor.fontSize": 13,
+        "editor.fontSize": 14,
         "workbench.colorCustomizations": {
             "activityBarBadge.background": "#2979FF",
             "list.activeSelectionForeground": "#2979FF",
@@ -948,27 +954,110 @@
             "notificationLink.foreground": "#2979FF",
             "editor.background": "#2F3542",
             "editorGutter.background": "#2a303d",
-            "statusBar.background": "#2a303d",
             "activityBar.background": "#2a303d",
             "sideBar.background": "#2a303d",
             "titleBar.activeBackground": "#2a303d",
             "tab.activeBackground": "#2a303d",
             "tab.inactiveBackground": "#232833",
-            //"tab.inactiveForeground": "#FF0000",
             "tab.unfocusedActiveBorder": "#009688",
             "editorGroupHeader.tabsBackground": "#2a303d",
             "terminal.background": "#232833",
             "panel.background": "#2a303d",
-            "peekViewEditor.background": "#ff0000"
-            //"scrollbarSlider.backgroun"statusBar.background": "#ff0000"statusBar.background": "#ff0000" "#ff0000"
-         },
+            "statusBar.foreground": "#a7a7a7"
+        },
         "materialTheme.cache.workbench.settings": {},
         "editor.tokenColorCustomizations": {
             "strings": "#FC8458",
-         
             "functions": "#e2e7ec",
             "keywords": "#44C0C6",
-            "variables": "#D1BC92"
-            
-        }
+            "variables": "#D1BC92",
+            "textMateRules": [
+                {
+                    "scope": "variable.other.constant",
+                    "settings": {
+                        "foreground": "#D1BC92",
+                    }
+                },
+                {
+                    "scope": "keyword.other.special-method",
+                    "settings": {
+                        "foreground": "#44C0C6",
+                    }
+                },
+                {
+                    "scope": "variable.language",
+                    "settings": {
+                        "foreground": "#d79bff",
+                    }
+                },
+                {
+                    "scope": "constant.other.symbol",
+                    "settings": {
+                        "foreground": "#fa9672",
+                    },
+                },
+                {
+                    "scope": "punctuation",
+                    "settings": {
+                        "foreground": "#bcc7d2",
+                    },
+                },
+                {
+                    "scope": "entity.name.type",
+                    "settings": {
+                        "foreground": "#D1BC92",
+                    },
+                },
+                {
+                    "scope": "source.elixir",
+                    "settings": {
+                        "foreground": "#bcc7d2",
+                    },
+                },
+            ]
+        },
+        "[elixir]": {
+            "editor.insertSpaces": true,
+            "editor.tabSize": 2,
+            "editor.wordBasedSuggestions": true,
+            "editor.formatOnType": true,
+            "editor.acceptSuggestionOnEnter": "on",
+            "editor.trimAutoWhitespace": false,
+            "files.trimTrailingWhitespace": true,
+            "files.insertFinalNewline": true
+        },
+        "editor.minimap.enabled": false,
+        "gitlens.advanced.messages": {
+            "suppressCommitHasNoPreviousCommitWarning": false,
+            "suppressCommitNotFoundWarning": false,
+            "suppressFileNotUnderSourceControlWarning": false,
+            "suppressGitVersionWarning": false,
+            "suppressLineUncommittedWarning": false,
+            "suppressNoRepositoryWarning": false,
+            "suppressResultsExplorerNotice": false,
+            "suppressShowKeyBindingsNotice": true
+        },
+        "vim.statusBarColorControl": false,
+        "vim.statusBarColors": {
+            "normal": [
+                "#44C0C6",
+                "#434C5E"
+            ],
+            "insert": [
+                "#FC8458",
+                "#232833"
+            ],
+            "visual": "#B48EAD",
+            "visualline": "#B48EAD",
+            "visualblock": "#A3BE8C",
+            "replace": "#D08770"
+        },
+        "window.zoomLevel": 0,
+        "[elm]": {
+            "editor.formatOnSave": true
+        },
+        "workbench.editor.enablePreview": false,
+        "files.trimTrailingWhitespace": true,
+        "workbench.activityBar.visible": true,
+        "gitlens.historyExplorer.enabled": true
     }

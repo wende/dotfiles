@@ -136,3 +136,7 @@ ssh-add
 
 alias kill-bg='kill $(jobs -p)'
 . /Users/krzysztofwende/.kerl/20.0/activate
+
+. $HOME/.asdf/asdf.sh
+
+. $HOME/.asdf/completions/asdf.bash
