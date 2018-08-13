@@ -3,7 +3,8 @@
         "vim.handleKeys": {
             "<C-e>": false,
             "<C-a>": false,
-            "<C-s>": false
+            "<C-s>": false,
+            "<C-y>": false
         },
         "vim.useCtrlKeys": false,
         "vim.otherModesKeyBindingsNonRecursive": [
@@ -16,6 +17,19 @@
                 "commands": [
                     {
                         "command": "workbench.action.showCommands",
+                        "args": []
+                    }
+                ]
+            },
+            {
+                "before": [
+                    "<leader>",
+                    "."
+                ],
+                "after": [],
+                "commands": [
+                    {
+                        "command": "editor.action.previewDeclaration",
                         "args": []
                     }
                 ]
@@ -1059,5 +1073,6 @@
         "workbench.editor.enablePreview": false,
         "files.trimTrailingWhitespace": true,
         "workbench.activityBar.visible": true,
-        "gitlens.historyExplorer.enabled": true
+        "gitlens.historyExplorer.enabled": true,
+        "editor.formatOnSave": true
     }
