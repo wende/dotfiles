@@ -24,7 +24,7 @@ values."
    '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
+     ;; Uncomment some layer names and press <SPC f  R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      ;; auto-completion
@@ -72,7 +72,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(gitlab)
+   dotspacemacs-additional-packages '(gitlab evil-smartparens)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -186,8 +186,8 @@ values."
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
    ;; If non nil then `ido' replaces `helm' for some commands. For now only
-   ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
-   ;; `find-contrib-file' (SPC f e c) are replaced. (default nil)
+   ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f  s), and
+   ;; `find-contrib-file' (SPC f  c) are replaced. (default nil)
    dotspacemacs-use-ido nil
    ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
@@ -299,6 +299,9 @@ layers configuration. You are free to put any user code."
   (add-hook 'alchemist-mode-hook 'company-mode)
   (add-hook 'alchemist-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
 
+  ;; Evil smartparens
+  (add-hook 'smartparens-enabled-hook 'evil-smartparens-mode)
+
   ;;Linum
   ;; (global-linum-mode)
   (setq
@@ -362,6 +365,8 @@ layers configuration. You are free to put any user code."
   (global-set-key [S-down] 'windmove-down)
   (global-set-key [S-J] 'windmove-down)
 
+  ;; (global-set-key [S-DEL] 'delete-matching)
+
   ;;(global-set-key (kbd "M-d") 'kill-whole-word)
   ;;(global-set-key (kbd "M-") 'kill-whole-word)
   (global-set-key (kbd "M-\"") 'smart-insert-quote)
@@ -370,7 +375,7 @@ layers configuration. You are free to put any user code."
   ;;(global-set-key (kbd "M-[") 'smart-insert-brackets)
   (global-set-key (kbd "M-(") 'smart-insert-parenthesis)
   (global-set-key (kbd "C-`") 'neotree-find-project-root)
-  (global-set-key (kbd "C-h") 'delete-char)
+  ;; (global-set-key (kbd "C-h") 'delete-char)
   ;; Coffeescript React
   (add-to-list 'auto-mode-alist '("\\.cjsx\\'" . coffee-mode))
 
@@ -409,6 +414,8 @@ layers configuration. You are free to put any user code."
   (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
   (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
   (define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
+
+  ;; (define-key evil-insert-state-map (kbd "C-SPC") 'kill-line)
    ;; (define-key company-active-map (kbd "C-SPC") 'company-complete-selection)
 
   ;; Magit refresh
@@ -433,7 +440,7 @@ layers configuration. You are free to put any user code."
     (global-set-key [mouse-5] '(lambda ()
                                  (interactive)
                                  (scroll-up 1)))
-    (defun track-mouse (e))
+    (defun track-mouse ())
     (setq mouse-sel-mode t)
     )
 
@@ -467,7 +474,7 @@ layers configuration. You are free to put any user code."
       (evil-next-line)))
 
   ;; Copy and yank for NW
-  (defun copy-to-clipboard ()
+   (defun copy-to-clipboard ()
     "Copies selection to x-clipboard."
     (interactive)
     (if (display-graphic-p)
@@ -497,6 +504,16 @@ layers configuration. You are free to put any user code."
   (evil-leader/set-key "o p" 'paste-from-clipboard)
   (evil-leader/set-key "o m" 'insert-last-message)
 
+  (spacemacs/declare-prefix "s x" "Sexy parens")
+  (evil-leader/set-key "s x u" 'sp-unwrap-sexp)
+  (evil-leader/set-key "s x d" 'evil-sp-delete-line)
+
+
+  (defun delete-matching ()
+    (interactive)
+    (backward-char)
+    (sp-unwrap-sexp)
+    )
   (defun last-message (&optional num)
     (or num (setq num 1))
     (if (= num 0)
@@ -525,6 +542,9 @@ layers configuration. You are free to put any user code."
    (quote
     ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "3632cf223c62cb7da121be0ed641a2243f7ec0130178722554e613c9ab3131de" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "ed763cdf0b7c523cdc094ba137080e7f2c4e7a28303e0cbeb0eda159f964f1b6" "ba9be9caf9aa91eb34cf11ad9e8c61e54db68d2d474f99a52ba7e87097fa27f5" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(package-selected-packages
+   (quote
+    (evil-smartparens zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify wakatime-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-elixir noflet noctilux-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode linum-relative link-hint light-soap-theme json-snatcher json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme intero inkpot-theme indent-guide hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitlab github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme fuzzy flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help erlang ensime engine-mode emmet-mode elm-mode elisp-slime-nav dumb-jump dracula-theme django-theme diminish diff-hl define-word dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmm-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(safe-local-variable-values
    (quote
     ((elm-sort-imports-on-save)
@@ -534,11 +554,11 @@ layers configuration. You are free to put any user code."
            (indent-buffer))
      (elixir-enable-compilation-checking . t)
      (elixir-enable-compilation-checking))))
- '(wakatime-api-key "e6745645-9797-47cb-bb95-1031cdcf1dd5")
- '(wakatime-cli-path "/usr/local/bin/wakatime"))
+ '(wakatime-api-key "0c17ac11-be9c-475b-b366-24995e4119ed" t)
+ '(wakatime-cli-path "/usr/local/bin/wakatime" t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:background nil)))))

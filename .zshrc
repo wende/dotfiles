@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="agnoster"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -49,7 +49,8 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-wakatime fzf-zsh z)
+
+plugins=(git zsh-autosuggestions zsh-wakatime fzf-zsh z docker)
 
 # User configuration
 
@@ -135,8 +136,18 @@ function dotenv () {
 ssh-add
 
 alias kill-bg='kill $(jobs -p)'
-. /Users/krzysztofwende/.kerl/20.0/activate
 
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
+
+# set yarn binaries on path
+# must be below the .asdf source commands ^
+export PATH="$(yarn global bin):$PATH"
+
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+eval "$(direnv hook zsh)"
+

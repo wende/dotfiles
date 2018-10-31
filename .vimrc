@@ -1,1 +1,0 @@
-/Users/iraasta/.space-vim/init.vim
