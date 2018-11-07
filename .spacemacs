@@ -164,7 +164,7 @@ values."
    ;; and TAB or <C-m> and RET.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
    ;; If non nil `Y' is remapped to `y$' in Evil states. (default nil)
    dotspacemacs-remap-Y-to-y$ nil
    ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
@@ -365,6 +365,8 @@ layers configuration. You are free to put any user code."
   (global-set-key [S-down] 'windmove-down)
   (global-set-key [S-J] 'windmove-down)
 
+  (global-set-key [C-i] 'evil-jump-backward-swap)
+
   ;; (global-set-key [S-DEL] 'delete-matching)
 
   ;;(global-set-key (kbd "M-d") 'kill-whole-word)
@@ -379,9 +381,12 @@ layers configuration. You are free to put any user code."
   ;; Coffeescript React
   (add-to-list 'auto-mode-alist '("\\.cjsx\\'" . coffee-mode))
 
+  (setq neo-vc-integration '(face char))
+
   ;; Find multi occur
   (define-key evil-normal-state-map (kbd "SPC b f") 'multi-occur-in-matching-buffers)
 
+  (setq helm-grep-file-path-style 'relative)
   ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 
   (define-key evil-insert-state-map "\C-e" 'end-of-line)
@@ -399,9 +404,9 @@ layers configuration. You are free to put any user code."
   (define-key evil-normal-state-map "\C-n" 'evil-next-line)
   (define-key evil-insert-state-map "\C-n" 'evil-next-line)
   (define-key evil-visual-state-map "\C-n" 'evil-next-line)
-  (define-key evil-normal-state-map "\C-p" 'evil-previous-line)
-  (define-key evil-insert-state-map "\C-p" 'evil-previous-line)
-  (define-key evil-visual-state-map "\C-p" 'evil-previous-line)
+  ;; (define-key evil-normal-state-map "\C-p" 'evil-previous-line)
+  ;; (define-key evil-insert-state-map "\C-p" 'evil-previous-line)
+  ;; (define-key evil-visual-state-map "\C-p" 'evil-previous-line)
   (define-key evil-normal-state-map "\C-w" 'evil-delete)
   (define-key evil-insert-state-map "\C-w" 'evil-delete)
   (define-key evil-visual-state-map "\C-w" 'evil-delete)
@@ -413,7 +418,27 @@ layers configuration. You are free to put any user code."
   (define-key evil-visual-state-map "\C-k" 'kill-line)
   (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
   (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
+  (define-key evil-normal-state-map "\C-p" 'evil-jump-forward)
+  (define-key evil-visual-state-map "\C-p" 'evil-jump-forward)
+  (define-key evil-insert-state-map "\C-p" 'evil-jump-forward)
   (define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
+
+  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+  ;;; esc quits
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.
+In Delete Selection mode, if the mark is active, just deactivate it;
+then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark  t)
+      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
 
   ;; (define-key evil-insert-state-map (kbd "C-SPC") 'kill-line)
    ;; (define-key company-active-map (kbd "C-SPC") 'company-complete-selection)
@@ -508,6 +533,7 @@ layers configuration. You are free to put any user code."
   (evil-leader/set-key "s x u" 'sp-unwrap-sexp)
   (evil-leader/set-key "s x d" 'evil-sp-delete-line)
 
+  (evil-leader/set-key "s a g" 'helm-grep-do-git-grep)
 
   (defun delete-matching ()
     (interactive)
