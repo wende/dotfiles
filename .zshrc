@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="agnoster"
+ZSH_THEME="wezm"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -141,13 +141,7 @@ alias kill-bg='kill $(jobs -p)'
 
 . $HOME/.asdf/completions/asdf.bash
 
-# set yarn binaries on path
-# must be below the .asdf source commands ^
-export PATH="$(yarn global bin):$PATH"
-
-
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 eval "$(direnv hook zsh)"
-

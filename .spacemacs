@@ -53,8 +53,7 @@ values."
      git
      version-control
      dash
-     ;;osx
-
+     osx
      html
      org
      colors
@@ -72,7 +71,10 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(gitlab evil-smartparens)
+   dotspacemacs-additional-packages '(
+                                      gitlab
+                                      evil-smartparens
+                                      (idle-highlight-mode :location (recipe :fetcher github :repo "wende/idle-highlight-mode")))
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -315,36 +317,8 @@ layers configuration. You are free to put any user code."
   ;;(set-face-attribute 'default nil :height 165)
 
 
-
-  ;; Switching windows
-  (defun kill-whole-word ()
-    (interactive)
-    (forward-word 1)
-    (backward-kill-word 1)
-    )
-  (defun smart-insert-quote ()
-    (interactive)
-    (insert-word "\"" "\"")
-    )
-  (defun smart-insert-parenthesis ()
-    (interactive)
-    (insert-word "(" ")")
-    )
-  (defun smart-insert-brackets ()
-    (interactive)
-    (insert-word "[" "]")
-    )
-
-  (defun smart-move-up ()
-    (interactive)
-    (move-text-up 1)
-    (indent-according-to-mode)
-    )
-  (defun smart-move-down ()
-    (interactive)
-    (move-text-down 1)
-    (indent-according-to-mode)
-    )
+  ;; Refresh buffers more often
+  (setq auto-revert-interval 1)
 
   ;; (define-key evil-search-highlight-persist-map (kbd "ESC") 'evil-search-highlight-persist-remove-all)
   (setq key-chord-two-keys-delay 20)
@@ -367,6 +341,9 @@ layers configuration. You are free to put any user code."
 
   (global-set-key [C-i] 'evil-jump-backward-swap)
 
+  (setq idle-highlight-idle-time 0.1)
+  (add-hook 'prog-mode-hook 'idle-highlight-mode)
+  (add-hook 'elixir-mode-hook 'idle-highlight-mode)
   ;; (global-set-key [S-DEL] 'delete-matching)
 
   ;;(global-set-key (kbd "M-d") 'kill-whole-word)
@@ -386,7 +363,12 @@ layers configuration. You are free to put any user code."
   ;; Find multi occur
   (define-key evil-normal-state-map (kbd "SPC b f") 'multi-occur-in-matching-buffers)
 
+  (setq exec-path-from-shell-check-startup-files nil)
   (setq helm-grep-file-path-style 'relative)
+
+  (setq helm-dash-docset-newpath "~/Library/Application Support/Dash/DocSets/")
+  (setq browse-url-generic-program "~/bin/chrome")
+
   ;; (define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 
   (define-key evil-insert-state-map "\C-e" 'end-of-line)
@@ -423,13 +405,18 @@ layers configuration. You are free to put any user code."
   (define-key evil-insert-state-map "\C-p" 'evil-jump-forward)
   (define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
 
-  (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-map (kbd "ESC") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map (kbd "ESC") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map (kbd "ESC") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map (kbd "ESC") 'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map (kbd "ESC") 'minibuffer-keyboard-quit)
+  (define-key evil-motion-state-map [escape] 'minibuffer-keyboard-quit)
+  (define-key evil-normal-state-map [escape] 'minibuffer-keyboard-quit)
+  (define-key evil-visual-state-map [escape] 'minibuffer-keyboard-quit)
+  (add-hook 'magit-mode-hook
+            (lambda () (define-key magit-status-mode-map (kbd "RET") 'magit-diff-visit-file-other-window))) 
 
-  ;;; esc quits
+  ;;; esc quitS
   (defun minibuffer-keyboard-quit ()
     "Abort recursive edit.
 In Delete Selection mode, if the mark is active, just deactivate it;
@@ -445,6 +432,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
   ;; Magit refresh
   ;;(add-hook 'after-save-hook 'magit-after-save-refresh-status)
+  (add-hook 'elixir-mode-hook
+            (lambda () (add-hook 'before-save-hook 'elixir-format nil t)))
 
   ;; Scala
   (setq-default dotspacemacs-configuration-layers '((scala :variables scala-enable-eldoc t)))
@@ -455,7 +444,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
 
   (setq-default spacemacs-show-trailing-whitespace nil)
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-;; Enable mouse support
+
+  ;; Enable mouse support
   (unless window-system
     (require 'mouse)
     (xterm-mouse-mode t)
@@ -467,6 +457,35 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
                                  (scroll-up 1)))
     (defun track-mouse ())
     (setq mouse-sel-mode t)
+    )
+
+  ;; Switching windows
+  (defun kill-whole-word ()
+    (interactive)
+    (forward-word 1)
+    (backward-kill-word 1)
+    )
+  (defun smart-insert-quote ()
+    (interactive)
+    (insert-word "\"" "\"")
+    )
+  (defun smart-insert-parenthesis ()
+    (interactive)
+    (insert-word "(" ")")
+    )
+  (defun smart-insert-brackets ()
+    (interactive)
+    (insert-word "[" "]")
+    )
+  (defun smart-move-up ()
+    (interactive)
+    (move-text-up 1)
+    (indent-according-to-mode)
+    )
+  (defun smart-move-down ()
+    (interactive)
+    (move-text-down 1)
+    (indent-according-to-mode)
     )
 
   (defun insert-word (arg arg2)
@@ -499,7 +518,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
       (evil-next-line)))
 
   ;; Copy and yank for NW
-   (defun copy-to-clipboard ()
+  (defun copy-to-clipboard ()
     "Copies selection to x-clipboard."
     (interactive)
     (if (display-graphic-p)
@@ -514,6 +533,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
             (deactivate-mark))
         (message "No region active; can't yank to clipboard!")))
     )
+
   (defun paste-from-clipboard ()
     "Pastes from x-clipboard."
     (interactive)
@@ -525,6 +545,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
       (insert (shell-command-to-string "xargs echo | pbpaste"))
       )
     )
+
   (evil-leader/set-key "o y" 'copy-to-clipboard)
   (evil-leader/set-key "o p" 'paste-from-clipboard)
   (evil-leader/set-key "o m" 'insert-last-message)
@@ -554,8 +575,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
             (buffer-substring-no-properties (point) end))))))
   (defun insert-last-message (&optional num)
     (interactive "*p")
-    (insert (last-message num)))
-)
+    (insert (last-message num))))
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -566,11 +587,12 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "3632cf223c62cb7da121be0ed641a2243f7ec0130178722554e613c9ab3131de" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "ed763cdf0b7c523cdc094ba137080e7f2c4e7a28303e0cbeb0eda159f964f1b6" "ba9be9caf9aa91eb34cf11ad9e8c61e54db68d2d474f99a52ba7e87097fa27f5" default)))
+    ("cd7ffd461946d2a644af8013d529870ea0761dccec33ac5c51a7aaeadec861c2" "ec5f697561eaf87b1d3b087dd28e61a2fc9860e4c862ea8e6b0b77bd4967d0ba" "9b35c097a5025d5da1c97dba45fed027e4fb92faecbd2f89c2a79d2d80975181" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "3632cf223c62cb7da121be0ed641a2243f7ec0130178722554e613c9ab3131de" "a2e7b508533d46b701ad3b055e7c708323fb110b6676a8be458a758dd8f24e27" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "ed763cdf0b7c523cdc094ba137080e7f2c4e7a28303e0cbeb0eda159f964f1b6" "ba9be9caf9aa91eb34cf11ad9e8c61e54db68d2d474f99a52ba7e87097fa27f5" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(global-linum-mode t)
  '(package-selected-packages
    (quote
-    (evil-smartparens zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify wakatime-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-elixir noflet noctilux-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode linum-relative link-hint light-soap-theme json-snatcher json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme intero inkpot-theme indent-guide hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitlab github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme fuzzy flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help erlang ensime engine-mode emmet-mode elm-mode elisp-slime-nav dumb-jump dracula-theme django-theme diminish diff-hl define-word dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmm-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (json-reformat tern iedit evil company helm helm-core yasnippet avy markdown-mode projectile org-plus-contrib magit git-commit ghub with-editor hydra js2-mode idle-highlight-mode idle-highlight-in-visible-buffers-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl evil-smartparens zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify wakatime-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-elixir noflet noctilux-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode linum-relative link-hint light-soap-theme json-snatcher json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme intero inkpot-theme indent-guide hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitlab github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme fuzzy flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help erlang ensime engine-mode emmet-mode elm-mode elisp-slime-nav dumb-jump dracula-theme django-theme diminish diff-hl define-word dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmm-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(safe-local-variable-values
    (quote
     ((elm-sort-imports-on-save)
@@ -581,7 +603,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
      (elixir-enable-compilation-checking . t)
      (elixir-enable-compilation-checking))))
  '(wakatime-api-key "0c17ac11-be9c-475b-b366-24995e4119ed" t)
- '(wakatime-cli-path "/usr/local/bin/wakatime" t))
+ '(wakatime-cli-path "/usr/local/bin/wakatime" t)
+ '(wakatime-python-bin nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
