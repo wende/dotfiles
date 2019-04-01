@@ -1,3 +1,4 @@
+#!/bin/bash
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -83,8 +84,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias to-work="cd ~/projects/manlamode/; vagrant ssh"
 alias spacemacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
+alias sap="ag  --nobreak --noheading . | fzf | egrep -o '^.*?\:\d+'"
+
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -129,9 +131,14 @@ export LC_NUMERIC="en_US.UTF-8"
 export LC_TIME="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 
+export ERL_AFLAGS="-kernel shell_history enabled"
+
 function dotenv () {
   env $(cat .env | xargs) $*
 }
+
+if which jenv > /dev/null; then eval "$(jenv init -)"; fi
+export PATH="$HOME/.jenv/shims:$PATH"
 
 ssh-add
 
@@ -145,3 +152,11 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 eval "$(direnv hook zsh)"
+
+# Haskell Cabal Stack
+export PATH="/Users/krzysztofwende/.local/bin:$PATH"
+export PATH="/Users/krzysztofwende/.cabal/bin:$PATH"
+
+# Go
+export PATH="/Users/krzysztofwende/go/bin:$PATH"
+export GOPATH="/Users/krzysztofwende/go"

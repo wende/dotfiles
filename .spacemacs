@@ -20,7 +20,7 @@ values."
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load. If it is the symbol `all' instead
        ;; of a list then all discovered layers will be installed.
-       dotspacemacs-configuration-layers
+   dotspacemacs-configuration-layers
    '(
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -28,6 +28,8 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      ;; auto-completion
+     (agda :variables
+           agda-mode-path "/Users/krzysztofwende/.cabal/share/x86_64-osx-ghc-8.4.4/Agda-2.5.4.2/emacs-mode/agda2.el")
      better-defaults
      emacs-lisp
      (shell :variables
@@ -62,8 +64,11 @@ values."
      yaml
      github
      haskell
+     (scala :variables scala-enable-eldoc t)
+     idris
+     terraform
      (wakatime :variables
-               wakatime-api-key  "e6745645-9797-47cb-bb95-1031cdcf1dd5"
+               wakatime-api-key  "0c17ac11-be9c-475b-b366-24995e4119ed"
                ;; use the actual wakatime path
                wakatime-cli-path "/usr/local/bin/wakatime")
      )
@@ -305,7 +310,7 @@ layers configuration. You are free to put any user code."
   (add-hook 'smartparens-enabled-hook 'evil-smartparens-mode)
 
   ;;Linum
-  ;; (global-linum-mode)
+  (global-linum-mode)
   (setq
    flycheck-pos-tip-timeout 10)
 
@@ -363,6 +368,9 @@ layers configuration. You are free to put any user code."
   ;; Find multi occur
   (define-key evil-normal-state-map (kbd "SPC b f") 'multi-occur-in-matching-buffers)
 
+  ;; Jump to word
+  (define-key evil-normal-state-map (kbd "SPC SPC") 'avy-goto-word-0)
+
   (setq exec-path-from-shell-check-startup-files nil)
   (setq helm-grep-file-path-style 'relative)
 
@@ -414,7 +422,7 @@ layers configuration. You are free to put any user code."
   (define-key evil-normal-state-map [escape] 'minibuffer-keyboard-quit)
   (define-key evil-visual-state-map [escape] 'minibuffer-keyboard-quit)
   (add-hook 'magit-mode-hook
-            (lambda () (define-key magit-status-mode-map (kbd "RET") 'magit-diff-visit-file-other-window))) 
+            (lambda () (define-key magit-status-mode-map (kbd "RET") 'magit-diff-visit-file-other-window)))
 
   ;;; esc quitS
   (defun minibuffer-keyboard-quit ()
@@ -434,9 +442,6 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   ;;(add-hook 'after-save-hook 'magit-after-save-refresh-status)
   (add-hook 'elixir-mode-hook
             (lambda () (add-hook 'before-save-hook 'elixir-format nil t)))
-
-  ;; Scala
-  (setq-default dotspacemacs-configuration-layers '((scala :variables scala-enable-eldoc t)))
 
   ;; Linter
   (setq-default js2-basic-offset 2
@@ -503,13 +508,13 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (setq prolog-system 'swi) ; prolog-system below for possible values
   (add-to-list 'auto-mode-alist '("\\.pl\\'" . prolog-mode))
 
-  (add-hook 'after-save-hook 'normal-mode)
+  (add-hook 'after-save-hook #'evil-normal-state)
 
   ; Alternative way to defeat smartparens-mode in hybrid mode
   (add-hook 'evil-hybrid-state-entry-hook 'turn-off-smartparens-mode)
   (add-hook 'evil-hybrid-state-exit-hook 'turn-on-smartparens-mode)
 
-
+  (setq elixir-enable-compilation-checking t)
 
   (define-key evil-normal-state-map (kbd "RET")
     (lambda ()
@@ -554,7 +559,15 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
   (evil-leader/set-key "s x u" 'sp-unwrap-sexp)
   (evil-leader/set-key "s x d" 'evil-sp-delete-line)
 
+
   (evil-leader/set-key "s a g" 'helm-grep-do-git-grep)
+
+  (spacemacs/declare-prefix (kbd "SPC") "Smart motion")
+  (evil-leader/set-key (kbd "SPC") 'avy-goto-word-0)
+
+  ;; JavaScript 2
+  (setq js2-strict-missing-semi-warning nil)
+  (setq js2-missing-semi-one-line-override nil)
 
   (defun delete-matching ()
     (interactive)
@@ -592,7 +605,7 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
  '(global-linum-mode t)
  '(package-selected-packages
    (quote
-    (json-reformat tern iedit evil company helm helm-core yasnippet avy markdown-mode projectile org-plus-contrib magit git-commit ghub with-editor hydra js2-mode idle-highlight-mode idle-highlight-in-visible-buffers-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl evil-smartparens zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify wakatime-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-elixir noflet noctilux-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode linum-relative link-hint light-soap-theme json-snatcher json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme intero inkpot-theme indent-guide hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitlab github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme fuzzy flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help erlang ensime engine-mode emmet-mode elm-mode elisp-slime-nav dumb-jump dracula-theme django-theme diminish diff-hl define-word dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmm-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (idris-mode prop-menu terraform-mode hcl-mode json-reformat tern iedit evil company helm helm-core yasnippet avy markdown-mode projectile org-plus-contrib magit git-commit ghub with-editor hydra js2-mode idle-highlight-mode idle-highlight-in-visible-buffers-mode reveal-in-osx-finder pbcopy osx-trash osx-dictionary launchctl evil-smartparens zenburn-theme zen-and-art-theme yaml-mode xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify wakatime-mode volatile-highlights vi-tilde-fringe uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toc-org tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode reverse-theme restart-emacs rebecca-theme rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme purple-haze-theme pug-mode professional-theme popwin planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode pcre2el paradox orgit organic-green-theme org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme ob-elixir noflet noctilux-theme neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow magit-gh-pulls madhat2r-theme macrostep lush-theme lua-mode lorem-ipsum livid-mode linum-relative link-hint light-soap-theme json-snatcher json-mode js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme intero inkpot-theme indent-guide hungry-delete htmlize hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-dash helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme haskell-snippets gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme google-translate golden-ratio gnuplot gitlab github-search github-clone github-browse-file gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gist gh-md gandalf-theme fuzzy flycheck-pos-tip flycheck-mix flycheck-haskell flycheck-elm flycheck-credo flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help erlang ensime engine-mode emmet-mode elm-mode elisp-slime-nav dumb-jump dracula-theme django-theme diminish diff-hl define-word dash-at-point darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme company-web company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode cmm-mode clues-theme clean-aindent-mode cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-compile apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes alchemist aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(safe-local-variable-values
    (quote
     ((elm-sort-imports-on-save)
@@ -602,8 +615,8 @@ then it takes a second \\[keyboard-quit] to abort the minibuffer."
            (indent-buffer))
      (elixir-enable-compilation-checking . t)
      (elixir-enable-compilation-checking))))
- '(wakatime-api-key "0c17ac11-be9c-475b-b366-24995e4119ed" t)
- '(wakatime-cli-path "/usr/local/bin/wakatime" t)
+ '(wakatime-api-key "0c17ac11-be9c-475b-b366-24995e4119ed")
+ '(wakatime-cli-path "/usr/local/bin/wakatime")
  '(wakatime-python-bin nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

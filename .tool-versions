@@ -1,5 +1,8 @@
 erlang 20.3
-elixir 1.6.4
+elixir 1.7.3
 elm 0.18.0
 nodejs 9.11.2
 python 3.6.5
+golang 1.11.5
+rebar 3.8.0
+ocaml 4.07.0
