@@ -85,7 +85,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias spacemacs='/Applications/Emacs.app/Contents/MacOS/Emacs'
-alias sap="ag  --nobreak --noheading . | fzf | egrep -o '^.*?\:\d+'"
 
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
@@ -94,7 +93,16 @@ notify() {
   terminal-notifier -title 'Terminal' -message 'Done with task!'
 }
 
-alias diskbiggest='du -hax $1 | sort -rh | head -10'
+touch "${HOME}/.last-fzf-query"
+sap() {
+  local result
+  last_fzf_query=$(cat "${HOME}/.last-fzf-query")
+  result="$(ag --nobreak --noheading . | fzf -q "$last_fzf_query" --print-query)"
+  echo "$result" | head -1 > "${HOME}/.last-fzf-query"
+  echo "$result" | sed "1 d" | grep -E -o '^.*?\:\d+'
+}
+
+alias diskbiggest='du -hax . | sort -rh | head -10'
 alias git-pull="git branch -r | grep -v  '\->' | while read remote; do git branch --track \"$${remote#origin/}\" \"$$remote\"; done"
 alias gls="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(authorname) - (%(color:green)%(committerdate:relative)%(color:reset)) - %(color:red)%(upstream:track)%(color:reset)'"
 alias git-clean='for b in `git branch --merged | grep -v \*`; do git branch -D $b; done'
@@ -134,7 +142,7 @@ export LC_ALL="en_US.UTF-8"
 export ERL_AFLAGS="-kernel shell_history enabled"
 
 function dotenv () {
-  env $(cat .env | xargs) $*
+  env "$(cat .env | xargs)" $*
 }
 
 if which jenv > /dev/null; then eval "$(jenv init -)"; fi
